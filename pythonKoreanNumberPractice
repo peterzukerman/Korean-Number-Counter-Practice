@@ -2,6 +2,8 @@ import sys
 from random import randint
 import random
 import time
+from tkinter import *
+from tkinter import ttk
 
 SinoNumbers = {
     0 : "",
@@ -45,7 +47,9 @@ counterNouns = {
     5 : ["floors", "층"], #sino
     6 : ["won", "원"], #sino
 }
-
+number = 0
+randomCounter = counterNouns[1]
+dictToUse = SinoNumbers
 
 def getDigit(digit, dictionary):
     if dictionary=="SinoNumbers":
@@ -55,16 +59,39 @@ def getDigit(digit, dictionary):
     else:
         return
 
-def questionGenerator():
+def setRandomVars():
     number = randint(1, 10)
     randomCounter = counterNouns[randint(0, 6)]
-    dictToUse = SinoNumbers
+
+def questionGenerator():
     if randomCounter==0 or randomCounter==1 or randomCounter==2 or randomCounter==3:
         dictToUse = NativeNumbers
-    print("" + str(number) + " " + randomCounter[0])
-    time.sleep(5)
-    print("" + dictToUse[number] + " " + randomCounter[1])
+    else:
+        dictToUse = SinoNumbers
+    return "" + str(number) + " " + randomCounter[0]
 
+def answerGenerator():
+    return "" + dictToUse[number] + " " + randomCounter[1]
 
-while True:
-    questionGenerator()
+def clicked():
+    koreanLine.configure(text=answerGenerator())
+
+def clicked2():
+    setRandomVars()
+    koreanLine.configure(text=questionGenerator())
+
+window = Tk()
+window.title("Korean Number/Counter App")
+window.geometry('350x200')
+
+setRandomVars()
+
+koreanLine = ttk.Label(window, text=questionGenerator(), font=(50))
+koreanLine.grid(column = 200, row = 100)
+koreanLine.configure(anchor="center")
+
+btn = Button(window, text="Show Answer", command=clicked)
+next = Button(window, text="Next", command=clicked2)
+btn.grid(column=200, row=150)
+next.grid(column = 210, row = 150)
+window.mainloop()
