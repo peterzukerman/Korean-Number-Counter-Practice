@@ -47,46 +47,34 @@ counterNouns = {
     5 : ["floors", "층"], #sino
     6 : ["won", "원"], #sino
 }
-number = 0
-randomCounter = counterNouns[1]
-dictToUse = SinoNumbers
 
-def getDigit(digit, dictionary):
-    if dictionary=="SinoNumbers":
-        return SinoNumbers[digit]
-    elif dictionary=="NativeNumbers":
-        return NativeNumbers[digit]
-    else:
-        return
 
-def setRandomVars():
-    number = randint(1, 10)
-    randomCounter = counterNouns[randint(0, 6)]
 
-def questionGenerator():
-    if randomCounter==0 or randomCounter==1 or randomCounter==2 or randomCounter==3:
+def questionGenerator(number, counter):
+    return "" + str(number) + " " + counter[0]
+
+def answerGenerator(number, counter):
+    if counter[0] in [1, 2, 3]:
         dictToUse = NativeNumbers
     else:
         dictToUse = SinoNumbers
-    return "" + str(number) + " " + randomCounter[0]
-
-def answerGenerator():
-    return "" + dictToUse[number] + " " + randomCounter[1]
+    return "" + dictToUse[number] + " " + counter[1]
 
 def clicked():
-    koreanLine.configure(text=answerGenerator())
+    koreanLine.configure(text=answerGenerator(number, randomCounter))
 
 def clicked2():
-    setRandomVars()
-    koreanLine.configure(text=questionGenerator())
+    number = randint(1, 10)
+    randomCounter = counterNouns[randint(0, 6)]
+    koreanLine.configure(text=questionGenerator(number, randomCounter))
 
 window = Tk()
 window.title("Korean Number/Counter App")
 window.geometry('350x200')
 
-setRandomVars()
-
-koreanLine = ttk.Label(window, text=questionGenerator(), font=(50))
+number = randint(1, 10)
+randomCounter = counterNouns[randint(0, 6)]
+koreanLine = ttk.Label(window, text=questionGenerator(number, randomCounter), font=(50))
 koreanLine.grid(column = 200, row = 100)
 koreanLine.configure(anchor="center")
 
