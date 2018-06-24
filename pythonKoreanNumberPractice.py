@@ -39,15 +39,14 @@ NativeNumbers = {
 }
 
 counterNouns = {
-    0 : ["students", "명"], #native
-    1 : ["dogs", "마리"], #native
-    2 : ["books", "권"], #native
-    3 : ["things", "개"], #native
-    4 : ["chapters", "과"], #sino
-    5 : ["floors", "층"], #sino
-    6 : ["won", "원"], #sino
+    0 : ["students", "명"], # native
+    1 : ["dogs", "마리"], # native
+    2 : ["books", "권"], # native
+    3 : ["things", "개"], # native
+    4 : ["chapters", "과"], # sino
+    5 : ["floors", "층"], # sino
+    6 : ["won", "원"], # sino
 }
-
 
 
 def questionGenerator(number, counter):
@@ -58,13 +57,27 @@ def answerGenerator(number, counter):
         dictToUse = NativeNumbers
     else:
         dictToUse = SinoNumbers
+
+    numbersArray = [int(x) for x in str(number)]
+    if len(numbersArray) == 2 and number != 10:
+        if number >= 40:
+            return "" + SinoNumbers[numbersArray[0]] + SinoNumbers[10] + " " + SinoNumbers[numbersArray[1]] + " " + counter[1]
+        else:
+            return "" + dictToUse[numbersArray[0]] + dictToUse[10] + " " + dictToUse[numbersArray[1]] + " " + counter[1]
+    elif len(numbersArray) == 3 and number != 100:
+        if numbersArray[1] == 0:
+            return "" + SinoNumbers[numbersArray[0]] + SinoNumbers[100] + " " + SinoNumbers[0] + " " + counter[1]
+        else:
+            return "" + SinoNumbers[numbersArray[0]] + SinoNumbers[100] + " " + SinoNumbers[numbersArray[1]] + SinoNumbers[10] + " " + SinoNumbers[numbersArray[2]] + " " + counter[1]
     return "" + dictToUse[number] + " " + counter[1]
 
 def clicked():
     koreanLine.configure(text=answerGenerator(number, randomCounter))
 
 def clicked2():
-    number = randint(1, 10)
+    global number
+    number = randint(1, 1000)
+    global randomCounter
     randomCounter = counterNouns[randint(0, 6)]
     koreanLine.configure(text=questionGenerator(number, randomCounter))
 
@@ -72,7 +85,7 @@ window = Tk()
 window.title("Korean Number/Counter App")
 window.geometry('350x200')
 
-number = randint(1, 10)
+number = randint(1, 1000)
 randomCounter = counterNouns[randint(0, 6)]
 koreanLine = ttk.Label(window, text=questionGenerator(number, randomCounter), font=(50))
 koreanLine.grid(column = 200, row = 100)
